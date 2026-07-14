@@ -1,0 +1,161 @@
+﻿@model BarangayCMS.Areas.Staff.ViewModels.CertificateViewModel
+@{
+    Layout = null; // Tinatanggal ang layout ng dashboard para malinis ang papel
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print - @Model.CertificateType</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+            body {
+                background-color: #fff;
+                font-family: 'Georgia', serif;
+                color: #000;
+            }
+
+            .print-container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 40px;
+                border: 1px solid #ddd;
+                margin-top: 20px;
+                position: relative;
+            }
+
+            .brgy-header {
+                text-align: center;
+                border-bottom: 3px double #000;
+                padding-bottom: 15px;
+                margin-bottom: 40px;
+            }
+
+            .cert-title {
+                font-size: 28px;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                text-align: center;
+                margin-bottom: 50px;
+                margin-top: 30px;
+            }
+
+            .cert-body {
+                font-size: 18px;
+                line-height: 1.8;
+                text-align: justify;
+                text-indent: 50px;
+                margin-bottom: 60px;
+            }
+
+            .signatory-space {
+                margin-top: 80px;
+                float: right;
+                text-align: center;
+                width: 250px;
+            }
+
+            .signatory-name {
+                font-weight: bold;
+                border-bottom: 1px solid #000;
+                text-transform: uppercase;
+            }
+
+            .footer-info {
+                margin-top: 100px;
+                font-size: 12px;
+                font-family: sans-serif;
+                color: #555;
+                border-top: 1px solid #ccc;
+                padding-top: 10px;
+            }
+
+            /* 🔑 Ginawa itong @@media para hindi mag-error sa Razor Engine */
+            @@media print {
+                .no-print {
+                    display: none !important;
+                }
+
+                .print-container {
+                    border: none;
+                    margin: 0;
+                    padding: 0;
+                }
+            }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Print Control Toolbar -->
+    <div class="container text-center my-3 no-print">
+        <button onclick="window.print();" class="btn btn-primary px-4 fw-bold shadow">Click to Print Document</button>
+        <button onclick="window.close();" class="btn btn-secondary px-3 ms-2">Close Tab</button>
+    </div>
+
+    <!-- Official Document Paper Frame -->
+    <div class="print-container shadow-sm">
+
+        <!-- Document Header -->
+        <div class="brgy-header">
+            <h5 class="m-0 uppercase fw-bold">Republic of the Philippines</h5>
+            <h6 class="m-0 text-muted">Province of Metro Manila</h6>
+            <h5 class="m-0 fw-semibold">BARANGAY CENTRAL PORTAL</h5>
+            <p class="small m-0 text-secondary">Office of the Punong Barangay</p>
+        </div>
+
+        <!-- Tracking Badge / Control Number -->
+        <div class="position-absolute" style="top: 40px; right: 40px; font-size: 12px; font-family: monospace;">
+            <strong>Control No:</strong> @Model.ControlNumber
+        </div>
+
+        <!-- Certificate Title -->
+        <div class="cert-title text-primary">
+            @Model.CertificateType
+        </div>
+
+        <!-- Certificate Content Body -->
+        <div class="cert-body">
+            TO WHOM IT MAY CONCERN:
+            <br><br>
+            This is to certify that <strong>@Model.ResidentName</strong>, of legal age, is a bona fide resident of Barangay Central Portal, and is known to be of good moral character and a law-abiding citizen in this community.
+            <br><br>
+            According to the records of this office, the aforementioned individual has no derogatory record or pending criminal case filed against them as of this date.
+            <br><br>
+            This certification is being issued upon the request of the interested party for the following specific purpose: <strong><u>@Model.Purpose</u></strong>.
+            <br><br>
+            Given this <strong>@(Model.DateIssued.HasValue ? Model.DateIssued.Value.ToString("ddth 'day of' MMMM, yyyy") : DateTime.Now.ToString("ddth 'day of' MMMM, yyyy"))</strong> at the Office of the Barangay Chairman.
+        </div>
+
+        <!-- Official Signatures -->
+        <div class="clearfix">
+            <div class="signatory-space">
+                <div class="signatory-name">@Model.IssuedBy</div>
+                <div class="small text-muted text-uppercase">Authorized Signatory / Staff</div>
+            </div>
+        </div>
+
+        <!-- Official Receipt and Audit Footer -->
+        <div class="footer-info row">
+            <div class="col-6">
+                <strong>O.R. Number:</strong> @(string.IsNullOrEmpty(Model.OfficialReceiptNumber) ? "EXEMPTED" : Model.OfficialReceiptNumber)<br>
+                <strong>Amount Paid:</strong> ₱@Model.AmountPaid.ToString("N2")
+            </div>
+            <div class="col-6 text-end">
+                <span class="text-muted small">Barangay CMS - Secure Document System</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auto Trigger Print Window on Load -->
+    <script>
+            window.onload = function () {
+                setTimeout(function () {
+                    window.print();
+                }, 500);
+            }
+    </script>
+</body>
+</html>

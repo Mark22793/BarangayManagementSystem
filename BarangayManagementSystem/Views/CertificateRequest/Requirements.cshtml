@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Document Requirements";
+}
+
+<section class="hero-section text-white py-5 px-4 mb-5 shadow-sm">
+    <div class="container py-2">
+        <div class="d-flex align-items-center gap-3">
+            <div class="p-3 bg-white bg-opacity-10 rounded-3 border border-white border-opacity-25">
+                <i class="bi bi-file-earmark-check fs-2"></i>
+            </div>
+            <div>
+                <h1 class="h2 fw-bold mb-1">Document Requirements</h1>
+                <p class="text-white-50 mb-0">Check the necessary documentation before filing your applications online or claiming them at the windows.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container pb-5">
+    <div class="row g-4">
+        <!-- Clearance Requirements Card -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm p-4 rounded-3 bg-white h-100">
+                <h5 class="fw-bold text-dark-blue mb-3 d-flex align-items-center">
+                    <i class="bi bi-person-badge text-primary me-2"></i> Barangay Clearance
+                </h5>
+                <p class="text-muted small">Issued for employment, local identification, or bank account openings.</p>
+                <ul class="list-unstyled text-secondary small lh-lg mt-2">
+                    <li><i class="bi bi-dot text-success fs-4 align-middle"></i> Recent Community Tax Certificate (Cedula)</li>
+                    <li><i class="bi bi-dot text-success fs-4 align-middle"></i> Any valid government-issued ID (with photo)</li>
+                    <li><i class="bi bi-dot text-success fs-4 align-middle"></i> Fully completed digital or physical form</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Indigency Requirements Card -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm p-4 rounded-3 bg-white h-100">
+                <h5 class="fw-bold text-dark-blue mb-3 d-flex align-items-center">
+                    <i class="bi bi-heart-pulse text-danger me-2"></i> Certificate of Indigency
+                </h5>
+                <p class="text-muted small">Issued to low-income residents for medical, educational, or financial aid.</p>
+                <ul class="list-unstyled text-secondary small lh-lg mt-2">
+                    <li><i class="bi bi-dot text-success fs-4 align-middle"></i> Case study report from DSWD or proof of low income</li>
+                    <li><i class="bi bi-dot text-success fs-4 align-middle"></i> Voter registration validation or Brgy. ID</li>
+                    <li><i class="bi bi-dot text-success fs-4 align-middle"></i> Purpose specifications (e.g., hospital bill, school billing)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 text-center">
+        <a asp-action="Create" class="btn btn-dark-blue text-white px-4 py-2.5 fw-semibold rounded-3 shadow-sm">
+            Proceed to Online Request Form
+        </a>
+    </div>
+</div>

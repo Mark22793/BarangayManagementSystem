@@ -1,0 +1,106 @@
+﻿@model BarangayCMS.Areas.Staff.ViewModels.ResidentViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "~/Areas/Staff/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Register New Citizen";
+}
+
+<div class="mb-4">
+    <a asp-area="Staff" asp-controller="Residents" asp-action="Index" class="btn btn-sm btn-outline-secondary mb-3">
+        <i class="bi bi-arrow-left"></i> Back to Residents List
+    </a>
+    <h2 class="fw-bold text-dark"><i class="bi bi-person-plus-fill text-primary me-2"></i>Register New Citizen</h2>
+    <p class="text-muted small">Setup login credentials and profile assignment privileges for portal access.</p>
+</div>
+
+<div class="card border-0 shadow-sm rounded p-4">
+    <form asp-area="Staff" asp-controller="Residents" asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+
+        <!-- Validation Summary para sa mga Required constraints -->
+        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+        <h5 class="fw-bold text-secondary mb-3"><i class="bi bi-person-bounding-box me-2"></i>Personal Information</h5>
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <label asp-for="FirstName" class="form-label fw-semibold text-dark"></label>
+                <input asp-for="FirstName" class="form-control" placeholder="e.g., Juan" required />
+                <span asp-validation-for="FirstName" class="text-danger small"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="MiddleName" class="form-label fw-semibold text-dark"></label>
+                <input asp-for="MiddleName" class="form-control" placeholder="e.g., Ramos" />
+                <span asp-validation-for="MiddleName" class="text-danger small"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="LastName" class="form-label fw-semibold text-dark"></label>
+                <input asp-for="LastName" class="form-control" placeholder="e.g., Dela Cruz" required />
+                <span asp-validation-for="LastName" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <h5 class="fw-bold text-secondary mb-3"><i class="bi bi-calendar-event me-2"></i>Demographics & Contact</h5>
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <label asp-for="BirthDate" class="form-label fw-semibold text-dark"></label>
+                <input asp-for="BirthDate" type="date" class="form-control" required />
+                <span asp-validation-for="BirthDate" class="text-danger small"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Gender" class="form-label fw-semibold text-dark"></label>
+                <select asp-for="Gender" class="form-select" required>
+                    <option value="" selected disabled>-- Select Gender --</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger small"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="CivilStatus" class="form-label fw-semibold text-dark"></label>
+                <select asp-for="CivilStatus" class="form-select" required>
+                    <option value="Single">Single</option>
+                    <option value="Married">Married</option>
+                    <option value="Widowed">Widowed</option>
+                    <option value="Separated">Separated</option>
+                </select>
+                <span asp-validation-for="CivilStatus" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <label asp-for="ContactNumber" class="form-label fw-semibold text-dark"></label>
+                <input asp-for="ContactNumber" class="form-control" placeholder="e.g., 09171234567" required />
+                <span asp-validation-for="ContactNumber" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Occupation" class="form-label fw-semibold text-dark"></label>
+                <input asp-for="Occupation" class="form-control" placeholder="e.g., Data Clerk" />
+                <span asp-validation-for="Occupation" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <h5 class="fw-bold text-secondary mb-3"><i class="bi bi-geo-alt me-2"></i>Geographical Address</h5>
+        <div class="mb-4">
+            <label asp-for="Address" class="form-label fw-semibold text-dark"></label>
+            <input asp-for="Address" class="form-control" placeholder="Purok, Sitio, Kalye o House Number..." required />
+            <span asp-validation-for="Address" class="text-danger small"></span>
+        </div>
+
+        <h5 class="fw-bold text-secondary mb-3"><i class="bi bi-sliders me-2"></i>Access Privileges</h5>
+        <div class="mb-4 p-3 bg-light rounded border">
+            <div class="form-check form-switch ms-2">
+                <input asp-for="IsVoter" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                <label asp-for="IsVoter" class="form-check-label fw-semibold text-dark" for="flexSwitchCheckDefault"> Rehistradong Botante sa Barangay na ito</label>
+            </div>
+        </div>
+
+        <div class="d-flex gap-2 justify-content-end pt-3 border-top">
+            <a asp-area="Staff" asp-controller="Residents" asp-action="Index" class="btn btn-light px-4">Cancel</a>
+            <button type="submit" class="btn btn-primary px-4 fw-semibold">
+                <i class="bi bi-check-circle-fill me-1"></i> Register Citizen Profile
+            </button>
+        </div>
+    </form>
+</div>

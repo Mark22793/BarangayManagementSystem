@@ -1,0 +1,90 @@
+﻿@model BarangayCMS.Web.Areas.Admin.Models.ResidentViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Edit Resident";
+}
+
+<div class="container mt-4" style="max-width: 700px;">
+    <div class="card shadow">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0">Edit Resident Information</h4>
+        </div>
+        <div class="card-body">
+            <!-- 🔑 INAYOS DITO: Idinagdag ang asp-route-id para pumasok ang Anti-Forgery token kasama ang ID ng residente -->
+            <form asp-area="Admin" asp-controller="Residents" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <label asp-for="FirstName" class="form-label">First Name</label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-5 mb-3">
+                        <label asp-for="LastName" class="form-label">Last Name</label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label asp-for="MiddleName" class="form-label">M.I.</label>
+                        <input asp-for="MiddleName" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Gender" class="form-label">Gender</label>
+                        <select asp-for="Gender" class="form-select">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="BirthDate" class="form-label">Birth Date</label>
+                        <input asp-for="BirthDate" type="date" class="form-control" />
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address" class="form-label">Address</label>
+                    <textarea asp-for="Address" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ContactNumber" class="form-label">Contact Number</label>
+                        <input asp-for="ContactNumber" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="CivilStatus" class="form-label">Civil Status</label>
+                        <select asp-for="CivilStatus" class="form-select">
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Widowed">Widowed</option>
+                            <option value="Separated">Separated</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <!-- ↩️ INAYOS DITO: Pinuwersa natin ang eksaktong ruta ng listahan para gumana ang Back to List kahit saan galing -->
+                    <a asp-area="Admin" asp-controller="Residents" asp-action="Index" class="btn btn-dark px-3">Back to List</a>
+                    <button type="submit" class="btn btn-warning px-4 fw-semibold">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

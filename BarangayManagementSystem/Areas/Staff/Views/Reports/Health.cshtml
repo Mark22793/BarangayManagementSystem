@@ -1,0 +1,47 @@
+﻿@model BarangayCMS.Areas.Staff.ViewModels.ReportsViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Health Operational Sheets</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+    <div class="container py-5" style="max-width: 900px;">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <a asp-action="Index" class="btn btn-sm btn-link text-decoration-none p-0 text-muted"><i class="bi bi-arrow-left"></i> Report Main</a>
+                <h4 class="fw-bold text-dark mt-1">@Model.ReportTitle</h4>
+            </div>
+            <button onclick="window.print()" class="btn btn-sm btn-dark px-3"><i class="bi bi-printer-fill"></i> Print</button>
+        </div>
+        <div class="card border-0 shadow-sm rounded-3">
+            <table class="table table-striped align-middle mb-0 small">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="ps-3">Log ID</th>
+                        <th>Health Clinic Mission</th>
+                        <th>Total Patient Count</th>
+                        <th class="pe-3">Assigned Medic</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.TableData)
+                    {
+                        <tr>
+                            <td class="ps-3 fw-bold">@row["LogID"]</td>
+                            <td>@row["Program"]</td>
+                            <td>@row["Attendees"]</td>
+                            <td class="pe-3">@row["Medic"]</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Global Portal Settings";
+}
+
+<div class="mb-4">
+    <h2 class="fw-bold text-dark mb-1">
+        <i class="bi bi-gear-fill text-secondary me-2"></i>Global Portal Settings
+    </h2>
+    <p class="text-muted small mb-0">Configure system-wide parameters, barangay metadata, and database engine maintenance.</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm rounded p-4">
+            <h6 class="fw-bold mb-3 text-dark"><i class="bi bi-building me-2 text-primary"></i>Barangay Profile Metadata</h6>
+            <div class="mb-3">
+                <label class="form-label small text-muted mb-1">Official Barangay Name</label>
+                <input type="text" class="form-control" value="Barangay Central Roster" disabled />
+            </div>
+            <div class="mb-3">
+                <label class="form-label small text-muted mb-1">Municipality / City</label>
+                <input type="text" class="form-control" value="Quezon City" disabled />
+            </div>
+            <button class="btn btn-sm btn-primary w-100">Update Profile Details</button>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm rounded p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+                <h6 class="fw-bold mb-3 text-dark"><i class="bi bi-hdd-network me-2 text-success"></i>Database Structural Maintenance</h6>
+                <p class="small text-muted">Generate full backup structural transaction dumps (.sql) or reset system logs cache safely.</p>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-success flex-fill"><i class="bi bi-cloud-arrow-up-fill me-1"></i> Backup</button>
+                <button class="btn btn-sm btn-outline-danger flex-fill"><i class="bi bi-trash3-fill me-1"></i> Clear Cache</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Request Lodged Successfully";
+}
+
+<div class="container py-5 my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <div class="card border-0 shadow-sm p-5 rounded-3 bg-white">
+                <div class="p-3 bg-emerald bg-opacity-10 text-success rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                    <i class="bi bi-shield-check display-5 text-emerald"></i>
+                </div>
+                <h3 class="fw-bold text-dark-blue mb-2">Request Processed</h3>
+                <p class="text-secondary small mb-4 px-3">Your online document request has been logged. Our office personnel are currently performing verification procedures. Kindly wait for validation cues via phone notifications.</p>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-dark-blue text-white px-4 py-2 fw-semibold rounded-3 shadow-sm">
+                        Return to Homepage
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

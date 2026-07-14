@@ -1,0 +1,50 @@
+﻿@model BarangayCMS.Web.Areas.Admin.Models.CertificateViewModel
+
+@{
+    ViewData["Title"] = "Generate Certificate";
+}
+
+<div class="container mt-4" style="max-width: 600px;">
+    <div class="card shadow border-primary">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-gear-fill"></i> Process & Generate Document</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Generate">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Resident Beneficiary</label>
+                    <input class="form-control bg-light" value="@Model.ResidentFullName" readonly />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Document Form Type</label>
+                    <input class="form-control bg-light" value="@Model.CertificateType" readonly />
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Date Requested</label>
+                        <input class="form-control bg-light" value="@Model.DateRequested.ToString("yyyy-MM-dd")" readonly />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DateIssued" class="form-label fw-bold">Official Issuance Date</label>
+                        <input asp-for="DateIssued" type="date" class="form-control" />
+                        <span asp-validation-for="DateIssued" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="alert alert-info py-2 small">
+                    <i class="bi bi-info-circle-fill"></i> Generating this file sets its database status to <strong>Issued</strong> and redirects to the printable layout sheet.
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">Back to Logs</a>
+                    <button type="submit" class="btn btn-success px-4">Approve & Open Layout</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

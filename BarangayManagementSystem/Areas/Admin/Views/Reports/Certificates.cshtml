@@ -1,0 +1,41 @@
+﻿@model IEnumerable<BarangayCMS.Web.Areas.Admin.Models.CertificateReportItem>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Issued Certificates Report";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4><i class="bi bi-file-earmark-text text-info"></i> Log ng mga Inisyung Sertipiko at Clearance</h4>
+        <!-- 🔑 NAAYOS: Nilagyan ng selyadong Admin routing path -->
+        <a asp-area="Admin" asp-controller="Reports" asp-action="Index" class="btn btn-sm btn-outline-secondary">Bumalik</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <table class="table table-hover mb-0">
+            <thead class="table-info">
+                <tr>
+                    <th>Reference No.</th>
+                    <th>Pangalan ng Humiling</th>
+                    <th>Uri ng Dokumento</th>
+                    <th>Petsa ng Pag-isyu</th>
+                    <th>Halagang Bayad</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cert in Model)
+                {
+                    <tr>
+                        <td><code>@cert.ReferenceNo</code></td>
+                        <td>@cert.RequestorName</td>
+                        <td>@cert.CertificateType</td>
+                        <td>@cert.DateIssued.ToShortDateString()</td>
+                        <td>₱@cert.AmountPaid.ToString("N2")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

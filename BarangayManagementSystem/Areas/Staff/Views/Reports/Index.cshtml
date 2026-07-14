@@ -1,0 +1,219 @@
+﻿@model BarangayCMS.Areas.Staff.ViewModels.ReportsViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "~/Areas/Staff/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Analytics & System Reports";
+}
+
+<div class="container-fluid"
+     id="report-root"
+     data-res="@Model.TotalResidents"
+     data-cert="@Model.TotalCertificatesIssued"
+     data-comp="@Model.ActiveComplaints"
+     data-dis="@Model.ActiveDisasters">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <small class="text-muted text-uppercase fw-bold">Analytics</small>
+            <h2 class="fw-bold text-dark m-0"><i class="bi bi-graph-up-arrow text-primary me-2"></i>Executive Summary & Reports</h2>
+            <p class="text-muted small mb-0">Generate comprehensive logs for population demographics, clearances issued, and cases recorded.</p>
+        </div>
+        <div class="btn-group shadow-sm no-print">
+            <button type="button" onclick="triggerPrintToPDF()" class="btn btn-outline-danger btn-sm fw-semibold bg-white">
+                <i class="bi bi-file-earmark-pdf-fill me-1 text-danger"></i> Export PDF / Print
+            </button>
+            <button type="button" onclick="exportReportToExcel()" class="btn btn-success btn-sm fw-semibold">
+                <i class="bi bi-file-earmark-excel-fill me-1"></i> Export Excel
+            </button>
+        </div>
+    </div>
+
+    <!-- 📈 METRICS OVERVIEW CARDS -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-3 bg-primary text-white">
+                <div class="card-body p-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <small class="text-white-50 text-uppercase fw-bold d-block" style="font-size: 0.75rem;">Total Residents</small>
+                        <h3 class="fw-bold m-0 mt-1">@Model.TotalResidents</h3>
+                    </div>
+                    <i class="bi bi-people-fill display-6 text-white-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-3 bg-success text-white">
+                <div class="card-body p-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <small class="text-white-50 text-uppercase fw-bold d-block" style="font-size: 0.75rem;">Certificates Issued</small>
+                        <h3 class="fw-bold m-0 mt-1">@Model.TotalCertificatesIssued</h3>
+                    </div>
+                    <i class="bi bi-file-earmark-check-fill display-6 text-white-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-3 bg-warning text-dark">
+                <div class="card-body p-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <small class="text-dark-50 text-uppercase fw-bold d-block" style="font-size: 0.75rem;">Active Blotter Cases</small>
+                        <h3 class="fw-bold m-0 mt-1">@Model.ActiveComplaints</h3>
+                    </div>
+                    <i class="bi bi-exclamation-triangle-fill display-6 text-dark-50"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm rounded-3 bg-danger text-white">
+                <div class="card-body p-3 d-flex align-items-center justify-content-between">
+                    <div>
+                        <small class="text-white-50 text-uppercase fw-bold d-block" style="font-size: 0.75rem;">Displaced Indivs</small>
+                        <h3 class="fw-bold m-0 mt-1">@Model.ActiveDisasters</h3>
+                    </div>
+                    <i class="bi bi-house-exclamation-fill display-6 text-white-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🗂️ REPORT GENERATION CONTROLS -->
+    <div class="card border-0 shadow-sm rounded-3 mb-4 no-print">
+        <div class="card-header bg-transparent border-0 pt-4 px-4 pb-0">
+            <h5 class="fw-bold text-dark m-0"><i class="bi bi-filter-square-fill text-secondary me-2"></i>Custom Report Generator</h5>
+            <p class="text-muted small mb-0">Pumili ng kategorya at petsa upang mag-export ng partikular na ulat.</p>
+        </div>
+        <div class="card-body p-4">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label small fw-bold text-secondary">Report Module</label>
+                    <select id="reportModule" class="form-select text-dark small fw-medium">
+                        <option value="Residents">Demographics & Resident Registry</option>
+                        <option value="Certificates">Certificates & Clearances Issued</option>
+                        <option value="Complaints">Blotter & Incident Records</option>
+                        <option value="Health">Health Profiling Summary</option>
+                        <option value="Disaster">Disaster & Relief Log</option>
+                        <option value="Environment">Ecological & Clean-up Drive</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold text-secondary">Start Date</label>
+                    <input type="date" id="startDate" class="form-control text-dark small" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold text-secondary">End Date</label>
+                    <input type="date" id="endDate" class="form-control text-dark small" />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" onclick="generateReport()" class="btn btn-primary fw-semibold w-100 shadow-sm small py-2">
+                        <i class="bi bi-gear-wide-connected me-1"></i> Generate
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function generateReport() {
+            var module = document.getElementById("reportModule").value;
+            var start = document.getElementById("startDate").value;
+            var end = document.getElementById("endDate").value;
+            var targetUrl = "/Staff/Reports/" + module;
+            if (start && end) {
+                targetUrl += "?startDate=" + start + "&endDate=" + end;
+            }
+            window.location.href = targetUrl;
+        }
+
+        function triggerPrintToPDF() {
+            window.print();
+        }
+
+        function exportReportToExcel() {
+            var root = document.getElementById("report-root");
+            var totalRes = root.getAttribute("data-res") || "0";
+            var totalCert = root.getAttribute("data-cert") || "0";
+            var totalComp = root.getAttribute("data-comp") || "0";
+            var totalDis = root.getAttribute("data-dis") || "0";
+
+            var today = new Date().toISOString().slice(0, 10);
+            var filename = "Barangay_Executive_Summary_" + today + ".xls";
+
+            var html = `<html><head><meta charset="utf-8"></head><body>
+                        <h2>BARANGAY SYSTEM EXECUTIVE SUMMARY REPORT</h2>
+                        <p>Generated Date: ${new Date().toLocaleString()}</p><br/>
+                        <table border="1" style="border-collapse:collapse;">
+                        <tr style="background-color:#0d6efd; color:white; font-weight:bold;"><th>Metric Category</th><th>Current Database Count</th></tr>
+                        <tr><td>Total Residents</td><td>${totalRes}</td></tr>
+                        <tr><td>Certificates Issued</td><td>${totalCert}</td></tr>
+                        <tr><td>Active Blotter Cases</td><td>${totalComp}</td></tr>
+                        <tr><td>Displaced Indivs / Active Disasters</td><td>${totalDis}</td></tr>
+                        </table></body></html>`;
+
+            var blob = new Blob([html], { type: "application/vnd.ms-excel" });
+
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                var a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        }
+    </script>
+}
+
+<style>
+    .text-white-50 {
+        color: rgba(255,255,255,0.65) !important;
+    }
+
+    .text-dark-50 {
+        color: rgba(0,0,0,0.5) !important;
+    }
+
+    @@media print {
+        .no-print, nav, .sidebar, header, .navbar, footer, #sidebarMenu, .btn-group {
+            display: none !important;
+        }
+
+        main, .content, .body-content, div.container-fluid {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .card {
+            border: 1px solid #dee2e6 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .bg-primary {
+            background-color: #0d6efd !important;
+            color: white !important;
+        }
+
+        .bg-success {
+            background-color: #198754 !important;
+            color: white !important;
+        }
+
+        .bg-warning {
+            background-color: #ffc107 !important;
+            color: black !important;
+        }
+
+        .bg-danger {
+            background-color: #dc3545 !important;
+            color: white !important;
+        }
+    }
+</style>

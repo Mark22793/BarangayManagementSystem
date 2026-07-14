@@ -1,0 +1,84 @@
+﻿@model BarangayCMS.Web.Models.ComplaintSubmissionModel
+@{
+    ViewData["Title"] = "File a Complaint";
+}
+
+<section class="hero-section text-white py-5 px-4 mb-5 shadow-sm">
+    <div class="container py-2">
+        <div class="d-flex align-items-center gap-3">
+            <div class="p-3 bg-white bg-opacity-10 rounded-3 border border-white border-opacity-25">
+                <i class="bi bi-file-earmark-medical fs-2"></i>
+            </div>
+            <div>
+                <h1 class="h2 fw-bold mb-1">Incident Report Form</h1>
+                <p class="text-white-50 mb-0">Ligtas at kumpidensyal na pag-uulat ng mga insidente o alitan sa loob ng barangay.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm p-4 rounded-3 bg-white">
+                <h5 class="fw-bold text-dark-blue mb-4"><i class="bi bi-shield-exclamation me-2 text-danger"></i>Complainant & Incident Details</h5>
+
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div class="row g-3">
+                        <!-- Complainant Identity -->
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-dark-blue">Complainant's Full Name</label>
+                            <input type="text" class="form-control bg-light border-0 py-2 px-3 fs-7" placeholder="Iyong Buong Pangalan" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-dark-blue">Contact Number</label>
+                            <input type="text" class="form-control bg-light border-0 py-2 px-3 fs-7" placeholder="09XX-XXX-XXXX" required />
+                        </div>
+
+                        <!-- Respondent / Incident Meta -->
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-dark-blue">Respondent Name (Inirereklamo)</label>
+                            <input type="text" class="form-control bg-light border-0 py-2 px-3 fs-7" placeholder="Pangalan ng Inirereklamo (Kung kilala)" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-dark-blue">Incident Category</label>
+                            <select class="form-select bg-light border-0 py-2 px-3 fs-7" required>
+                                <option value="">-- Piliin ang Kategorya --</option>
+                                <option value="Dispute">Neighborhood Dispute (Alitan)</option>
+                                <option value="Ordinance">Ordinance Violation (Paglabag)</option>
+                                <option value="Emergency">Peace and Order Issue</option>
+                                <option value="Others">Iba pang usapin</option>
+                            </select>
+                        </div>
+
+                        <!-- Narratives -->
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-dark-blue">Location of Incident</label>
+                            <input type="text" class="form-control bg-light border-0 py-2 px-3 fs-7" placeholder="Saan naganap ang insidente?" required />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-dark-blue">Statement of Facts (Salaysay ng Pangyayari)</label>
+                            <textarea class="form-control bg-light border-0 py-2 px-3 fs-7" rows="5" placeholder="Ikwento nang detalyado ang buong pangyayari..." required></textarea>
+                        </div>
+
+                        <!-- Attachments (Optional) -->
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-dark-blue">Evidence / Photos (Opsyonal)</label>
+                            <input type="file" class="form-control bg-light border-0 fs-7" accept="image/*,application/pdf" />
+                            <small class="text-muted d-block mt-1 fs-8">Maaaring maglakip ng litrato o PDF document bilang patunay.</small>
+                        </div>
+                    </div>
+
+                    <div class="bg-light p-3 rounded-3 my-4 text-muted small">
+                        <i class="bi bi-info-circle-fill text-danger me-1"></i> <strong>Paalala:</strong> Ang pagpuno sa form na ito ay may legal na pananagutan. Tiyaking totoo at tumpak ang lahat ng impormasyong iyong ibibigay para sa mabilis na pag-aksyon ng barangay officer.
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-light btn-sm px-3 border text-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-success bg-emerald border-0 text-white btn-sm px-4 fw-bold">Submit Official Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

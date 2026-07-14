@@ -1,0 +1,64 @@
+﻿@model IEnumerable<BarangayCMS.Web.Areas.Admin.Models.ResidentViewModel>
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Residents Master Census Roster";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-dark mb-1"><i class="bi bi-people text-primary me-2"></i>Residents Management</h2>
+        <p class="text-muted small mb-0">Census data bank containing profiles, voting registrations, and households roster information.</p>
+    </div>
+    <!-- 🟢 GUMAGANA NA: Nagli-link na sa Registration Form -->
+    <a href="/Admin/Residents/Create" class="btn btn-primary shadow-sm">
+        <i class="bi bi-person-plus-fill me-1"></i> Register Resident
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm rounded p-4">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Resident Name</th>
+                    <th>Gender / Age</th>
+                    <th>Purok Address</th>
+                    <th>Contact Number</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold text-dark">@item.LastName, @item.FirstName @item.MiddleName</td>
+                            <td>
+                                <span class="badge bg-secondary-subtle text-dark">@item.Gender</span>
+                                <small class="text-muted ms-1">(@(DateTime.Now.Year - item.BirthDate.Year) yrs old)</small>
+                            </td>
+                            <td>@item.Address</td>
+                            <td>@(string.IsNullOrEmpty(item.ContactNumber) ? "N/A" : item.ContactNumber)</td>
+                            <td class="text-end">
+                                <a href="/Admin/Residents/Edit/@item.Id" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil-square"></i></a>
+                                <a href="/Admin/Residents/Details/@item.Id" class="btn btn-sm btn-outline-info text-info me-1"><i class="bi bi-info-circle"></i></a>
+                                <a href="/Admin/Residents/Delete/@item.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            <i class="bi bi-people display-6 d-block mb-2"></i>
+                            <span>No resident logs found. Click "Register Resident" to add a new profile.</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
