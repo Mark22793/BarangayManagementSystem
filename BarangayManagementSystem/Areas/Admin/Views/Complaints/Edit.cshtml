@@ -1,6 +1,5 @@
 ﻿@model BarangayCMS.Web.Areas.Admin.Models.ComplaintViewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
 @{
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Modify Logged Complaint Records";
@@ -16,19 +15,31 @@
                 @Html.AntiForgeryToken()
                 <input type="hidden" asp-for="Id" />
 
-                <!-- Complainant Dropdown -->
+                <!-- Complainant Name Section -->
                 <div class="mb-3">
-                    <label asp-for="ResidentId" class="form-label fw-bold">Complainant Name Reference</label>
-                    <select asp-for="ResidentId" asp-items="Model.ResidentList" class="form-select">
-                        <option value="">-- Select Complainant --</option>
-                    </select>
-                    <span asp-validation-for="ResidentId" class="text-danger small"></span>
+                    <label class="form-label fw-bold">Complainant Name Reference</label>
+
+                    @if (Model.Subject != null && Model.Subject.StartsWith("CMP"))
+                    {
+                        <!-- Ipinapakita ang totoong pangalan mula sa Controller kung ito ay galing sa public form -->
+                        <div class="alert alert-info py-2 px-3 mb-2 rounded border small">
+                            <i class="bi bi-person-fill me-2 text-primary"></i>Submitted Online By: <strong>@Model.ResidentFullName</strong>
+                        </div>
+                        <input type="hidden" asp-for="ResidentId" />
+                    }
+                    else
+                    {
+                        <select asp-for="ResidentId" asp-items="Model.ResidentList" class="form-select">
+                            <option value="">-- Select Complainant --</option>
+                        </select>
+                        <span asp-validation-for="ResidentId" class="text-danger small"></span>
+                    }
                 </div>
 
                 <!-- Subject -->
                 <div class="mb-3">
                     <label asp-for="Subject" class="form-label fw-bold">Subject / Case Matter</label>
-                    <input asp-for="Subject" class="form-control" />
+                    <input asp-for="Subject" class="form-control" readonly="@(Model.Subject != null && Model.Subject.StartsWith("CMP"))" />
                     <span asp-validation-for="Subject" class="text-danger small"></span>
                 </div>
 

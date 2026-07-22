@@ -17,6 +17,12 @@ namespace BarangayCMS.DTO
 
         public string Status { get; set; } = "Pending"; // Pending, Approved, Issued, Rejected
         public DateTime IssuedDate { get; set; }
-        public string IssuedBy { get; set; } = string.Empty; // Pangalan ng Staff/Admin
+        public string IssuedBy { get; set; } = string.Empty;
+
+     
+        public string? PaymentReceiptPath { get; set; }
+
+        public byte[]? PaymentReceiptBytes { get; set; }
+       
     }
 }

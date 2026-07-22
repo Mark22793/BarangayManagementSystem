@@ -12,6 +12,7 @@
             <h2 class="fw-bold m-0 text-dark" style="font-size: 1.5rem;">Certificates Ledger</h2>
         </div>
         <div>
+            <!-- Button para gumawa ng bagong certificate request -->
             <a asp-area="Staff" asp-controller="Certificates" asp-action="Create" class="btn btn-primary fw-semibold px-4 shadow-sm">
                 Issue New Certificate
             </a>
@@ -27,6 +28,7 @@
                         <th>Resident Name</th>
                         <th>Certificate Type</th>
                         <th>Purpose</th>
+                        <th>Fee & Receipt</th>
                         <th>Date Issued</th>
                         <th>Status</th>
                         <th class="text-end">Actions</th>
@@ -38,21 +40,58 @@
                         foreach (var item in Model)
                         {
                             <tr>
+                                <!-- Control Number -->
                                 <td class="text-muted small fw-mono">
                                     @(string.IsNullOrEmpty(item.ControlNumber) ? "N/A" : item.ControlNumber)
                                 </td>
+
+                                <!-- Resident Name -->
                                 <td class="fw-semibold text-dark">
                                     @item.ResidentName
                                 </td>
+
+                                <!-- Certificate Type Badge -->
                                 <td>
                                     <span class="badge bg-primary-subtle text-primary px-2 py-1">
                                         @item.CertificateType
                                     </span>
                                 </td>
+
+                                <!-- Purpose -->
                                 <td class="text-muted small">@item.Purpose</td>
+
+                                <!-- Fee & Proof of Payment -->
+                                <td>
+                                    @if (item.FeePaid > 0)
+                                    {
+                                        <div class="d-flex flex-column align-items-start gap-1">
+                                            <span class="badge bg-success-subtle text-success fw-bold">
+                                                ₱@item.FeePaid.ToString("N2")
+                                            </span>
+                                            @if (!string.IsNullOrEmpty(item.PaymentReceiptPath))
+                                            {
+                                                <a href="@item.PaymentReceiptPath" target="_blank" class="small text-primary text-decoration-underline" style="font-size: 12px;">
+                                                    <i class="bi bi-file-earmark-image me-1"></i>View Receipt
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted" style="font-size: 11px; font-style: italic;">No Receipt</span>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-light text-muted">FREE</span>
+                                    }
+                                </td>
+
+                                <!-- Date Issued -->
                                 <td>
                                     @(item.DateIssued.HasValue ? item.DateIssued.Value.ToString("MM/dd/yyyy") : "Pending")
                                 </td>
+
+                                <!-- Status Badge -->
                                 <td>
                                     @if (item.Status == "Issued" || item.Status == "Approved")
                                     {
@@ -67,15 +106,17 @@
                                         <span class="badge bg-warning-subtle text-warning px-2 py-1 rounded">@item.Status</span>
                                     }
                                 </td>
+
+                                <!-- Actions Block -->
                                 <td class="text-end">
                                     <div class="d-flex justify-content-end align-items-center gap-2">
 
-                                        <!-- View Details Button (Always Available) -->
+                                        <!-- Details Button -->
                                         <a asp-area="Staff" asp-controller="Certificates" asp-action="Details" asp-route-id="@item.CertificateId" class="btn btn-sm btn-outline-secondary px-3">
                                             View Details
                                         </a>
 
-                                        <!-- 🔑 APPROVE BUTTON: Lalabas lang kung PENDING pa ang status -->
+                                        <!-- Approve Action (Lalabas lang kung 'Pending') -->
                                         @if (item.Status == "Pending")
                                         {
                                             <form asp-area="Staff" asp-controller="Certificates" asp-action="Approve" asp-route-id="@item.CertificateId" method="post" class="m-0 p-0" onsubmit="return confirm('Sigurado ka bang nais mong aprobahan ang sertipikong ito?');">
@@ -86,11 +127,11 @@
                                             </form>
                                         }
 
-                                        <!-- PRINT BUTTON: Lalabas kapag APPROVED o ISSUED na -->
+                                        <!-- Print Action (Lalabas kapag 'Issued' or 'Approved') -->
                                         @if (item.Status == "Issued" || item.Status == "Approved")
                                         {
                                             <a asp-area="Staff" asp-controller="Certificates" asp-action="Print" asp-route-id="@item.CertificateId" target="_blank" class="btn btn-sm btn-success px-3 fw-semibold">
-                                                Print
+                                                <i class="bi bi-printer-fill me-1"></i>Print
                                             </a>
                                         }
                                     </div>
@@ -101,7 +142,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="7" class="text-center py-4 text-muted small">
+                            <td colspan="8" class="text-center py-4 text-muted small">
                                 Walang nakitang talaan ng mga sertipiko.
                             </td>
                         </tr>

@@ -1,10 +1,27 @@
 ﻿@model BarangayCMS.Web.Areas.Admin.Models.ReportsDashboardViewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
 @{
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "System Analytical Reports";
 }
+
+<!-- 🔴 RED HOVER EFFECT STYLE -->
+<style>
+    .btn-export-pdf {
+        background-color: #212529; /* Dark/Itim sa simula */
+        color: #ffffff;
+        border: 1px solid #212529;
+        transition: all 0.3s ease;
+    }
+
+        /* Magiging Kulay Pula kapag itinutok ang cursor/arrow */
+        .btn-export-pdf:hover {
+            background-color: #dc3545 !important; /* Red */
+            border-color: #dc3545 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.35); /* Red Glow Effect */
+        }
+</style>
 
 <!-- BANNER AT EXPORT NAVIGATION -->
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -15,8 +32,8 @@
         <p class="text-muted small mb-0">Compile demographic, safety incidents, and general transaction report datasets.</p>
     </div>
 
-    <!-- 🔑 NAAYOS NA BUTTON: May link na papunta sa iyong Export.cshtml Center -->
-    <a asp-area="Admin" asp-controller="Reports" asp-action="Export" class="btn btn-dark shadow-sm">
+    <!-- 🔑 NAAYOS NA BUTTON: Magkukulay pula kapag tina-tapatan ng cursor -->
+    <a asp-area="Admin" asp-controller="Reports" asp-action="Export" class="btn btn-export-pdf shadow-sm">
         <i class="bi bi-download me-1"></i> Export PDF Summary
     </a>
 </div>

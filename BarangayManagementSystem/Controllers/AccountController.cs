@@ -120,11 +120,21 @@ namespace BarangayCMS.Web.Controllers
             return View(); // Hahanapin nito ang AccessDenied.cshtml
         }
 
-        [HttpGet]
+        // ========================================================
+        // 🚀 INAYOS: GINAWANG POST AT DIRETSONG REDIRECT SA LOGIN
+        // ========================================================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
+            // 1. I-sign out ang user mula sa Identity authentication cookie context
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+
+            // 2. Siguraduhing malinis ang local memory sessions ng server
+            
+
+            // 3. Diretsong balik sa Login screen ng controller na ito
+            return RedirectToAction("Login", "Account");
         }
     }
 }

@@ -20,6 +20,9 @@ namespace BarangayCMS.Web.Areas.Admin.Models
         [Required(ErrorMessage = "Description is required.")]
         public string Description { get; set; } = string.Empty;
 
+        [Display(Name = "Complainant Name (Form)")]
+        public string ComplainantName { get; set; } = string.Empty;
+
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Date Submitted")]

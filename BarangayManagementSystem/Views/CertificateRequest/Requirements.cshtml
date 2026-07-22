@@ -49,9 +49,25 @@
         </div>
     </div>
 
+    <!-- BINAGO DITO: Pinalitan ang btn-dark-blue ng solid background color para lumitaw ang button -->
     <div class="mt-5 text-center">
-        <a asp-action="Create" class="btn btn-dark-blue text-white px-4 py-2.5 fw-semibold rounded-3 shadow-sm">
-            Proceed to Online Request Form
+        <a asp-action="Create" class="btn text-white px-4 py-2.5 fw-semibold rounded-3 shadow-sm transition-btn" style="background-color: #1a365d; border: none;">
+            Proceed to Online Request Form <i class="bi bi-arrow-right ms-2"></i>
         </a>
     </div>
 </div>
+
+@section Scripts {
+    <style>
+        /* Dagdag na swabe at pormal na hover effect para sa asul na button */
+        .transition-btn {
+            transition: all 0.2s ease-in-out;
+        }
+
+            .transition-btn:hover {
+                background-color: #244675 !important;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 10px rgba(26, 54, 93, 0.25) !important;
+            }
+    </style>
+}

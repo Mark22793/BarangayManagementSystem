@@ -30,9 +30,11 @@ namespace BarangayCMS.Web.Areas.Admin.Controllers
                 {
                     Id = c.ComplaintId,
                     ResidentId = c.ResidentId,
-                    ResidentFullName = c.Resident != null ? $"{c.Resident.LastName}, {c.Resident.FirstName}" : "Unknown Resident",
-                    Subject = !string.IsNullOrEmpty(c.CaseNumber) ? c.CaseNumber : "No Case Number", // Fallback gamit ang CaseNumber kung walang explicit Subject
-                    Description = c.Details, // Inayos mula Description -> Details ng Entity
+                    // CHANGER: Kung may laman ang ComplainantName (mula sa public form), ito ang ipakita. Kung wala, fallback sa Resident name.
+                    ResidentFullName = !string.IsNullOrEmpty(c.ComplainantName) ? c.ComplainantName :
+                                       (c.Resident != null ? $"{c.Resident.LastName}, {c.Resident.FirstName}" : "Unknown Resident"),
+                    Subject = !string.IsNullOrEmpty(c.CaseNumber) ? c.CaseNumber : "No Case Number",
+                    Description = c.Details,
                     DateSubmitted = c.DateSubmitted,
                     Status = c.Status
                 }).ToListAsync();
@@ -55,7 +57,9 @@ namespace BarangayCMS.Web.Areas.Admin.Controllers
             {
                 Id = complaint.ComplaintId,
                 ResidentId = complaint.ResidentId,
-                ResidentFullName = complaint.Resident != null ? $"{complaint.Resident.LastName}, {complaint.Resident.FirstName} {complaint.Resident.MiddleName}".Trim() : "Unknown Resident",
+                // CHANGER: Ginagamit na ang nakasulat na pangalan para sa public submissions upang mawala si Jomarie
+                ResidentFullName = !string.IsNullOrEmpty(complaint.ComplainantName) ? complaint.ComplainantName :
+                                   (complaint.Resident != null ? $"{complaint.Resident.LastName}, {complaint.Resident.FirstName} {complaint.Resident.MiddleName}".Trim() : "Unknown Resident"),
                 Subject = !string.IsNullOrEmpty(complaint.CaseNumber) ? complaint.CaseNumber : "No Case Number",
                 Description = complaint.Details,
                 DateSubmitted = complaint.DateSubmitted,
@@ -83,7 +87,6 @@ namespace BarangayCMS.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Kumuha ng resident info para sa back-up fields ng bagong entity mo
                 var resident = await _context.Residents.FindAsync(model.ResidentId);
                 string residentName = resident != null ? $"{resident.LastName}, {resident.FirstName}" : "Unknown";
                 string residentContact = resident?.ContactNumber ?? string.Empty;
@@ -91,11 +94,10 @@ namespace BarangayCMS.Web.Areas.Admin.Controllers
                 var complaint = new Complaint
                 {
                     ResidentId = model.ResidentId,
-                    Details = model.Description ?? string.Empty, // Inayos mula Description -> Details ng Entity
+                    Details = model.Description ?? string.Empty,
                     DateSubmitted = model.DateSubmitted,
                     Status = model.Status ?? "Pending",
 
-                    // Pag-puno sa mga bagong fields ng entity mo para hindi mag-null sa Database
                     CaseNumber = $"CMP-{DateTime.Now:yyyyMMdd}-{Guid.NewGuid().ToString()[..4].ToUpper()}",
                     ComplainantName = residentName,
                     ComplainantContact = residentContact,
@@ -106,7 +108,7 @@ namespace BarangayCMS.Web.Areas.Admin.Controllers
                     ActionTaken = string.Empty
                 };
 
-                _context.Complaints.Add(complaint); // Tahasang tinukoy ang DbSet
+                _context.Complaints.Add(complaint);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -120,13 +122,20 @@ namespace BarangayCMS.Web.Areas.Admin.Controllers
         {
             if (id == null) return NotFound();
 
-            var complaint = await _context.Complaints.FindAsync(id.Value);
+            var complaint = await _context.Complaints
+                .Include(c => c.Resident)
+                .FirstOrDefaultAsync(m => m.ComplaintId == id);
+
             if (complaint == null) return NotFound();
 
             var viewModel = new ComplaintViewModel
             {
                 Id = complaint.ComplaintId,
                 ResidentId = complaint.ResidentId,
+                // CHANGER: Ipinapasa ang tamang pangalan sa model para sa rendering reference
+                ResidentFullName = !string.IsNullOrEmpty(complaint.ComplainantName) ? complaint.ComplainantName :
+                                   (complaint.Resident != null ? $"{complaint.Resident.LastName}, {complaint.Resident.FirstName}" : "Unknown Resident"),
+                Subject = !string.IsNullOrEmpty(complaint.CaseNumber) ? complaint.CaseNumber : "No Case Number",
                 Description = complaint.Details,
                 DateSubmitted = complaint.DateSubmitted,
                 Status = complaint.Status,
@@ -150,8 +159,18 @@ namespace BarangayCMS.Web.Areas.Admin.Controllers
                     var complaint = await _context.Complaints.FindAsync(id);
                     if (complaint == null) return NotFound();
 
-                    complaint.ResidentId = model.ResidentId;
-                    complaint.Details = model.Description ?? string.Empty; // Inayos mula Description -> Details ng Entity
+                    // Kung ito ay galing sa public web panel, pinapanatili ang orihinal na ComplainantName link
+                    if (complaint.CaseNumber == null || !complaint.CaseNumber.StartsWith("CMP"))
+                    {
+                        complaint.ResidentId = model.ResidentId;
+                        var resident = await _context.Residents.FindAsync(model.ResidentId);
+                        if (resident != null)
+                        {
+                            complaint.ComplainantName = $"{resident.LastName}, {resident.FirstName}";
+                        }
+                    }
+
+                    complaint.Details = model.Description ?? string.Empty;
                     complaint.DateSubmitted = model.DateSubmitted;
                     complaint.Status = model.Status;
 
@@ -184,7 +203,10 @@ namespace BarangayCMS.Web.Areas.Admin.Controllers
             var viewModel = new ComplaintViewModel
             {
                 Id = complaint.ComplaintId,
-                ResidentFullName = complaint.Resident != null ? $"{complaint.Resident.LastName}, {complaint.Resident.FirstName}" : "Unknown Resident",
+                // CHANGER: Pinalitan para ipakita ang totoong nagreklamo sa dispatch screen
+                ResidentFullName = !string.IsNullOrEmpty(complaint.ComplainantName) ? complaint.ComplainantName :
+                                   (complaint.Resident != null ? $"{complaint.Resident.LastName}, {complaint.Resident.FirstName}" : "Unknown Resident"),
+                Subject = !string.IsNullOrEmpty(complaint.CaseNumber) ? complaint.CaseNumber : "No Case Number",
                 Description = complaint.Details,
                 Status = complaint.Status
             };
@@ -223,7 +245,10 @@ namespace BarangayCMS.Web.Areas.Admin.Controllers
             var viewModel = new ComplaintViewModel
             {
                 Id = complaint.ComplaintId,
-                ResidentFullName = complaint.Resident != null ? $"{complaint.Resident.LastName}, {complaint.Resident.FirstName}" : "Unknown Resident",
+                // CHANGER: Inaayos din dito para hindi na sumingit si Jomarie sa modal/status update state
+                ResidentFullName = !string.IsNullOrEmpty(complaint.ComplainantName) ? complaint.ComplainantName :
+                                   (complaint.Resident != null ? $"{complaint.Resident.LastName}, {complaint.Resident.FirstName}" : "Unknown Resident"),
+                Subject = !string.IsNullOrEmpty(complaint.CaseNumber) ? complaint.CaseNumber : "No Case Number",
                 Status = complaint.Status
             };
 
@@ -261,7 +286,10 @@ namespace BarangayCMS.Web.Areas.Admin.Controllers
             var viewModel = new ComplaintViewModel
             {
                 Id = complaint.ComplaintId,
-                ResidentFullName = complaint.Resident != null ? $"{complaint.Resident.LastName}, {complaint.Resident.FirstName}" : "Unknown Resident",
+                // CHANGER: Pinatitindi ang seguridad ng deletion panel sa pagpapakita ng tunay na sumulat ng reklamo
+                ResidentFullName = !string.IsNullOrEmpty(complaint.ComplainantName) ? complaint.ComplainantName :
+                                   (complaint.Resident != null ? $"{complaint.Resident.LastName}, {complaint.Resident.FirstName}" : "Unknown Resident"),
+                Subject = !string.IsNullOrEmpty(complaint.CaseNumber) ? complaint.CaseNumber : "No Case Number",
                 Status = complaint.Status
             };
 

@@ -1,168 +1,178 @@
-﻿@{
+@{
     ViewData["Title"] = "Home";
 }
 
-<section class="hero-section text-center text-white py-5 px-3" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
-    <div class="container py-4">
-        <span class="badge rounded-pill bg-white bg-opacity-10 text-white border border-white border-opacity-25 mb-3 px-3 py-2 small">
-            <i class="bi bi-shield-fill me-1 text-success"></i> Digital Barangay Governance Platform
-        </span>
-        <h1 class="display-5 fw-bold mb-3 px-md-5">Komprehensibong Sistema ng Pamamahala at Pagbibigay ng Serbisyo para sa Barangay</h1>
-        <p class="lead text-white-50 mx-auto mb-4 fs-6 modern-max-width" style="max-width: 700px;">
-            Isang sentralisadong plataporma upang mapabilis ang mga pampublikong serbisyo, paghiling ng dokumento, at pag-uulat ng mga insidente sa ating komunidad.
-        </p>
-        <div class="d-flex justify-content-center gap-3">
-            <a asp-controller="CertificateRequest" asp-action="Requirements" class="btn btn-light px-4 py-2 fw-semibold text-decoration-none">
-                Request Certificate <i class="bi bi-chevron-right small ms-1"></i>
-            </a>
-            <a asp-controller="Complaint" asp-action="Categories" class="btn btn-outline-light px-4 py-2 bg-white bg-opacity-10 text-decoration-none">
-                File a Report
-            </a>
-            <a asp-controller="Account" asp-action="Login" class="btn btn-success bg-emerald px-4 py-2 fw-semibold text-white text-decoration-none">
-                <i class="bi bi-person-lock me-1"></i> Staff Login
-            </a>
+@* The structure below is layout-agnostic: the active preset (data-layout on
+   <html>) decides whether it renders as the classic, split or compact page.
+   See wwwroot/css/site.css. *@
+
+<section class="hero">
+    <div class="hero__inner">
+        <div class="hero__content">
+            <span class="hero__eyebrow">
+                <i class="bi bi-shield-fill" aria-hidden="true"></i> Digital Barangay Governance Platform
+            </span>
+            <h1 class="hero__title">Komprehensibong Sistema ng Pamamahala at Pagbibigay ng Serbisyo para sa Barangay</h1>
+            <p class="hero__lead">
+                Isang sentralisadong plataporma upang mapabilis ang mga pampublikong serbisyo, paghiling ng dokumento, at pag-uulat ng mga insidente sa ating komunidad.
+            </p>
+            <div class="hero__actions">
+                <a asp-controller="CertificateRequest" asp-action="Requirements" class="btn-hero-primary">
+                    Request Certificate <i class="bi bi-chevron-right small" aria-hidden="true"></i>
+                </a>
+                <a asp-controller="Complaint" asp-action="Categories" class="btn-hero-ghost">
+                    File a Report
+                </a>
+                <a asp-controller="Account" asp-action="Login" class="btn-hero-accent">
+                    <i class="bi bi-person-lock" aria-hidden="true"></i> Staff Login
+                </a>
+            </div>
+        </div>
+
+        @* Shown only by the split layout. *@
+        <aside class="hero__figure">
+            <div class="hero__figure-row"><span>Office Hours</span> <strong>Mon&ndash;Fri, 8AM&ndash;5PM</strong></div>
+            <div class="hero__figure-row"><span>Emergency Hotline</span> <strong>0912-345-6789</strong></div>
+            <div class="hero__figure-row"><span>Public Desk Email</span> <strong>support@barangay.gov.ph</strong></div>
+            <div class="hero__figure-row"><span>Evacuation Centers</span> <strong>3 Active</strong></div>
+        </aside>
+    </div>
+</section>
+
+<section class="stats">
+    <div class="stats__grid">
+        <div>
+            <p class="stats__value">8</p>
+            <span class="stats__label">Service Modules</span>
+        </div>
+        <div>
+            <p class="stats__value">1,250+</p>
+            <span class="stats__label">Registered Residents</span>
+        </div>
+        <div>
+            <p class="stats__value">3</p>
+            <span class="stats__label">Evacuation Centers</span>
+        </div>
+        <div>
+            <p class="stats__value">24/7</p>
+            <span class="stats__label">Emergency Line</span>
         </div>
     </div>
 </section>
 
-<section class="bg-white border-bottom py-4 shadow-sm">
-    <div class="container">
-        <div class="row text-center g-3">
-            <div class="col-6 col-md-3">
-                <h3 class="fw-bold text-primary mb-0">8</h3>
-                <small class="text-muted">Service Modules</small>
-            </div>
-            <div class="col-6 col-md-3">
-                <h3 class="fw-bold text-primary mb-0">1,250+</h3>
-                <small class="text-muted">Registered Residents</small>
-            </div>
-            <div class="col-6 col-md-3">
-                <h3 class="fw-bold text-primary mb-0">3</h3>
-                <small class="text-muted">Evacuation Centers</small>
-            </div>
-            <div class="col-6 col-md-3">
-                <h3 class="fw-bold text-primary mb-0">24/7</h3>
-                <small class="text-muted">Emergency Line</small>
-            </div>
-        </div>
-    </div>
-</section>
+<section class="section">
+    <div class="section__inner about">
+        <div>
+            <span class="eyebrow">About the System</span>
+            <h2 class="section__title">Isang Integrated Digital Platform para sa Barangay</h2>
+            <p class="section__text mb-3">Ang sistemang ito ay isang integrated digital platform na ginawa upang mapabilis, mapadali, at mapahusay ang mga operasyon at serbisyo ng barangay.</p>
+            <p class="section__text mb-4">Layunin nitong gawing mas organisado ang records management, public service delivery, communication, at emergency response upang mas mapagsilbihan nang maayos ang mga mamamayan.</p>
 
-<section class="container py-5 mt-3">
-    <div class="row g-5 align-items-center">
-        <div class="col-lg-6">
-            <small class="text-success text-uppercase fw-bold tracking-wider d-block mb-2">About the System</small>
-            <h2 class="fw-bold text-dark mb-3">Isang Integrated Digital Platform para sa Barangay</h2>
-            <p class="text-secondary mb-3">Ang sistemang ito ay isang integrated digital platform na ginawa upang mapabilis, mapadali, at mapahusay ang mga operasyon at serbisyo ng barangay.</p>
-            <p class="text-secondary mb-4">Layunin nitong gawing mas organisado ang records management, public service delivery, communication, at emergency response upang mas mapagsilbihan nang maayos ang mga mamamayan.</p>
-
-            <ul class="list-unstyled space-y-2">
-                <li class="d-flex align-items-start mb-2"><i class="bi bi-check-circle-fill text-success me-2 mt-1"></i> <span>Mabilis na paghiling ng Barangay Clearance at Permits online</span></li>
-                <li class="d-flex align-items-start mb-2"><i class="bi bi-check-circle-fill text-success me-2 mt-1"></i> <span>Ligtas at kumpidensyal na pag-pasa ng blotter reports o sumbong</span></li>
-                <li class="d-flex align-items-start mb-2"><i class="bi bi-check-circle-fill text-success me-2 mt-1"></i> <span>Sentralisadong census management para sa mga awtorisadong kawani</span></li>
+            <ul class="checklist">
+                <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i> <span>Mabilis na paghiling ng Barangay Clearance at Permits online</span></li>
+                <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i> <span>Ligtas at kumpidensyal na pag-pasa ng blotter reports o sumbong</span></li>
+                <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i> <span>Sentralisadong census management para sa mga awtorisadong kawani</span></li>
             </ul>
         </div>
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm p-4 rounded-3 bg-white border-start border-4 border-primary">
-                <div class="d-flex align-items-center mb-4">
-                    <div class="p-3 bg-light rounded-3 text-primary me-3"><i class="bi bi-building fs-3"></i></div>
-                    <div>
-                        <h5 class="fw-bold mb-0">Barangay Hall Information</h5>
-                        <small class="text-muted">Official Public Contact Desk</small>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-borderless align-middle mb-0 text-secondary small">
-                        <tr><td class="ps-0 py-2">Office Hours</td><td class="text-end fw-bold text-dark">Mon–Fri, 8AM–5PM</td></tr>
-                        <tr class="border-top"><td class="ps-0 py-2">Emergency Hotline</td><td class="text-end fw-bold text-danger">0912-345-6789</td></tr>
-                        <tr class="border-top"><td class="ps-0 py-2">Public Desk Email</td><td class="text-end fw-bold text-dark">support@barangay.gov.ph</td></tr>
-                    </table>
+
+        <div class="panel">
+            <div class="panel__head">
+                <span class="module__icon"><i class="bi bi-building" aria-hidden="true"></i></span>
+                <div>
+                    <h5 class="panel__title">Barangay Hall Information</h5>
+                    <span class="stats__label">Official Public Contact Desk</span>
                 </div>
             </div>
+            <table class="info-table">
+                <tr><td>Office Hours</td><td>Mon&ndash;Fri, 8AM&ndash;5PM</td></tr>
+                <tr><td>Emergency Hotline</td><td class="is-urgent">0912-345-6789</td></tr>
+                <tr><td>Public Desk Email</td><td>support@barangay.gov.ph</td></tr>
+            </table>
         </div>
     </div>
 </section>
 
-<section class="bg-light py-5">
-    <div class="container text-center">
-        <small class="text-success text-uppercase fw-bold tracking-wider">Public & Protected Features</small>
-        <h2 class="fw-bold text-dark mb-2">Complete Service Modules</h2>
-        <p class="text-muted mb-5">Gabay sa mga serbisyong bukas para sa publiko at mga nangangailangan ng admin credential.</p>
+<section class="section section--alt">
+    <div class="section__inner">
+        <div class="text-center mb-5">
+            <span class="eyebrow">Public &amp; Protected Features</span>
+            <h2 class="section__title">Complete Service Modules</h2>
+            <p class="section__text">Gabay sa mga serbisyong bukas para sa publiko at mga nangangailangan ng admin credential.</p>
+        </div>
 
-        <div class="row g-4 text-start">
+        <div class="modules">
 
-            <!-- 1. PUBLIC MODULE: CERTIFICATES -->
-            <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow-sm p-4 rounded-3 bg-white">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div class="p-2 bg-primary bg-opacity-10 text-primary rounded"><i class="bi bi-file-earmark-text fs-4"></i></div>
-                        <span class="badge bg-success text-white px-2 py-1 rounded-1 raw-xs">Public Access</span>
-                    </div>
-                    <h6 class="fw-bold text-dark">Certificates and Permits</h6>
-                    <p class="text-muted small">Mag-apply online para sa mga opisyal na dokumento ng barangay nang hindi pumipila.</p>
-                    <ul class="list-unstyled small text-secondary mb-4 mt-auto">
-                        <li><span class="text-success me-1">•</span> Barangay Clearance</li>
-                        <li><span class="text-success me-1">•</span> Certificate of Residency</li>
-                        <li><span class="text-success me-1">•</span> Indigency Certificate</li>
-                    </ul>
-                    <a asp-controller="CertificateRequest" asp-action="Requirements" class="text-primary fw-semibold small text-decoration-none mt-2">Request Document &rarr;</a>
+            <article class="module">
+                <div class="module__top">
+                    <span class="module__icon"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span>
+                    <span class="module__tag">Public Access</span>
                 </div>
-            </div>
+                <h3 class="module__title">Certificates and Permits</h3>
+                <p class="module__desc">Mag-apply online para sa mga opisyal na dokumento ng barangay nang hindi pumipila.</p>
+                <ul class="module__list">
+                    <li>Barangay Clearance</li>
+                    <li>Certificate of Residency</li>
+                    <li>Indigency Certificate</li>
+                </ul>
+                <a asp-controller="CertificateRequest" asp-action="Requirements" class="module__link">Request Document &rarr;</a>
+            </article>
 
-            <!-- 2. PUBLIC MODULE: COMPLAINTS -->
-            <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow-sm p-4 rounded-3 bg-white">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div class="p-2 bg-warning bg-opacity-10 text-warning rounded"><i class="bi bi-chat-left-text fs-4"></i></div>
-                        <span class="badge bg-success text-white px-2 py-1 rounded-1 raw-xs">Public Access</span>
-                    </div>
-                    <h6 class="fw-bold text-dark">Complaints & Incident Filing</h6>
-                    <p class="text-muted small">Iulat nang ligtas at kumpidensyal ang mga insidente o alitan sa inyong nasasakupan.</p>
-                    <ul class="list-unstyled small text-secondary mb-4 mt-auto">
-                        <li><span class="text-success me-1">•</span> Blotter Submission</li>
-                        <li><span class="text-success me-1">•</span> Incident Reporting</li>
-                        <li><span class="text-success me-1">•</span> Mediation Requests</li>
-                    </ul>
-                    <a asp-controller="Complaint" asp-action="Categories" class="text-primary fw-semibold small text-decoration-none mt-2">File a Report &rarr;</a>
+            <article class="module">
+                <div class="module__top">
+                    <span class="module__icon"><i class="bi bi-chat-left-text" aria-hidden="true"></i></span>
+                    <span class="module__tag">Public Access</span>
                 </div>
-            </div>
+                <h3 class="module__title">Complaints &amp; Incident Filing</h3>
+                <p class="module__desc">Iulat nang ligtas at kumpidensyal ang mga insidente o alitan sa inyong nasasakupan.</p>
+                <ul class="module__list">
+                    <li>Blotter Submission</li>
+                    <li>Incident Reporting</li>
+                    <li>Mediation Requests</li>
+                </ul>
+                <a asp-controller="Complaint" asp-action="Categories" class="module__link">File a Report &rarr;</a>
+            </article>
 
-            <!-- 3. PROTECTED: RESIDENT RECORDS -->
-            <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow-sm p-4 rounded-3 bg-white opacity-75">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div class="p-2 bg-secondary bg-opacity-10 text-secondary rounded"><i class="bi bi-people fs-4"></i></div>
-                        <span class="badge bg-dark text-white px-2 py-1 rounded-1 raw-xs"><i class="bi bi-lock-fill"></i> Staff Only</span>
-                    </div>
-                    <h6 class="fw-bold text-muted">Resident Information (Census)</h6>
-                    <p class="text-muted small">Ang pamamahala ng database ng mga residente at pamilya ay para lamang sa mga awtorisadong kawani.</p>
-                    <ul class="list-unstyled small text-secondary mb-4 mt-auto">
-                        <li><span class="text-muted me-1">•</span> Population Registry</li>
-                        <li><span class="text-muted me-1">•</span> Household Mapping</li>
-                        <li><span class="text-muted me-1">•</span> Demographics Logs</li>
-                    </ul>
-                    <a asp-controller="Account" asp-action="Login" class="text-secondary fw-semibold small text-decoration-none mt-2">Requires Login &rarr;</a>
+            <article class="module module--locked">
+                <div class="module__top">
+                    <span class="module__icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+                    <span class="module__tag"><i class="bi bi-lock-fill" aria-hidden="true"></i> Staff Only</span>
                 </div>
-            </div>
+                <h3 class="module__title">Resident Information (Census)</h3>
+                <p class="module__desc">Ang pamamahala ng database ng mga residente at pamilya ay para lamang sa mga awtorisadong kawani.</p>
+                <ul class="module__list">
+                    <li>Population Registry</li>
+                    <li>Household Mapping</li>
+                    <li>Demographics Logs</li>
+                </ul>
+                <a asp-controller="Account" asp-action="Login" class="module__link">Requires Login &rarr;</a>
+            </article>
 
-            <!-- 4. PROTECTED: BUDGET & MONITORING -->
-            <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow-sm p-4 rounded-3 bg-white opacity-75">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div class="p-2 bg-secondary bg-opacity-10 text-secondary rounded"><i class="bi bi-bar-chart fs-4"></i></div>
-                        <span class="badge bg-dark text-white px-2 py-1 rounded-1 raw-xs"><i class="bi bi-lock-fill"></i> Staff Only</span>
-                    </div>
-                    <h6 class="fw-bold text-muted">Internal Auditing & Budget</h6>
-                    <p class="text-muted small">Pagsubaybay sa pondo ng barangay, mga gastusin sa proyekto, at alokasyon ng kaban.</p>
-                    <ul class="list-unstyled small text-secondary mb-4 mt-auto">
-                        <li><span class="text-muted me-1">•</span> Fund Allocations</li>
-                        <li><span class="text-muted me-1">•</span> Infrastructure Tracking</li>
-                        <li><span class="text-muted me-1">•</span> Financial Reports</li>
-                    </ul>
-                    <a asp-controller="Account" asp-action="Login" class="text-secondary fw-semibold small text-decoration-none mt-2">Requires Login &rarr;</a>
+            <article class="module module--locked">
+                <div class="module__top">
+                    <span class="module__icon"><i class="bi bi-bar-chart" aria-hidden="true"></i></span>
+                    <span class="module__tag"><i class="bi bi-lock-fill" aria-hidden="true"></i> Staff Only</span>
                 </div>
-            </div>
+                <h3 class="module__title">Internal Auditing &amp; Budget</h3>
+                <p class="module__desc">Pagsubaybay sa pondo ng barangay, mga gastusin sa proyekto, at alokasyon ng kaban.</p>
+                <ul class="module__list">
+                    <li>Fund Allocations</li>
+                    <li>Infrastructure Tracking</li>
+                    <li>Financial Reports</li>
+                </ul>
+                <a asp-controller="Account" asp-action="Login" class="module__link">Requires Login &rarr;</a>
+            </article>
 
         </div>
     </div>
 </section>
+
+@* Floating appearance switcher — Home only. The preset it saves applies site-wide. *@
+<partial name="_ThemeSwitcher" />
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            window.BmsTheme.initSwitcher();
+        });
+    </script>
+}

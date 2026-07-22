@@ -15,6 +15,9 @@ namespace BarangayCMS.DAL.Context
         // public DbSet<ApplicationUser> Users { get; set; } = null!;
 
         public DbSet<ReportLog> ReportLogs { get; set; } = null!;
+        public DbSet<CertificateType> CertificateTypes { get; set; }
+        public DbSet<SystemSetting> SystemSettings { get; set; }
+
         public DbSet<Complaint> Complaints { get; set; } = null!;
         public DbSet<Certificate> Certificates { get; set; } = null!;
         public DbSet<Announcement> Announcements { get; set; } = null!;

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BarangayCMS.BLL.Interfaces;
+using BarangayCMS.DAL.Repository;
 using BarangayCMS.DAL.Repository.Interfaces;
 using BarangayCMS.DTO;
 using BarangayCMS.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BarangayCMS.BLL.Services
 {
@@ -23,39 +25,65 @@ namespace BarangayCMS.BLL.Services
             var cert = await _certRepo.GetByIdAsync(id);
             if (cert == null) return null;
 
+            string displayName = "Unknown";
+            if (!string.IsNullOrEmpty(cert.ResidentName))
+            {
+                displayName = cert.ResidentName;
+            }
+            else if (cert.Resident != null)
+            {
+                displayName = $"{cert.Resident.FirstName} {cert.Resident.LastName}";
+            }
+
             return new CertificateDTO
             {
                 Id = cert.CertificateId,
-                ResidentId = cert.ResidentId,
-                ResidentName = cert.Resident != null ? $"{cert.Resident.FirstName} {cert.Resident.LastName}" : "Unknown",
+                ResidentId = cert.ResidentId.GetValueOrDefault(),
+                ResidentName = displayName,
                 CertificateType = cert.CertificateType,
                 Purpose = cert.Purpose,
                 ControlNumber = cert.ControlNumber,
                 FeePaid = cert.FeePaid,
+                PaymentReceiptPath = cert.PaymentReceiptPath,
                 OfficialReceiptNumber = cert.OfficialReceiptNumber,
                 Status = cert.Status,
-                IssuedDate = cert.DateIssued ?? DateTime.MinValue,
+                IssuedDate = cert.DateRequested,
                 IssuedBy = cert.IssuedBy
             };
         }
 
         public async Task<IEnumerable<CertificateDTO>> GetAllCertificatesAsync()
         {
-            var certs = await _certRepo.GetAllWithResidentAsync();
-            return certs.Select(cert => new CertificateDTO
-            {
-                Id = cert.CertificateId,
-                ResidentId = cert.ResidentId,
-                ResidentName = cert.Resident != null ? $"{cert.Resident.FirstName} {cert.Resident.LastName}" : "Unknown",
-                CertificateType = cert.CertificateType,
-                Purpose = cert.Purpose,
-                ControlNumber = cert.ControlNumber,
-                FeePaid = cert.FeePaid,
-                OfficialReceiptNumber = cert.OfficialReceiptNumber,
-                Status = cert.Status,
-                IssuedDate = cert.DateIssued ?? DateTime.MinValue,
-                IssuedBy = cert.IssuedBy
-            });
+            // 🌟 ITINAMA: Ginamit ang 'GetAllWithResidentAsync()' mula sa iyong repository interface
+            var certificates = await _certRepo.GetAllWithResidentAsync();
+
+            return certificates.Select(c => {
+                string displayName = "Unknown";
+                if (!string.IsNullOrEmpty(c.ResidentName))
+                {
+                    displayName = c.ResidentName;
+                }
+                else if (c.Resident != null)
+                {
+                    displayName = $"{c.Resident.FirstName} {c.Resident.LastName}";
+                }
+
+                return new CertificateDTO
+                {
+                    Id = c.CertificateId,
+                    ResidentId = c.ResidentId.GetValueOrDefault(),
+                    ResidentName = displayName,
+                    CertificateType = c.CertificateType,
+                    Purpose = c.Purpose,
+                    ControlNumber = c.ControlNumber,
+                    OfficialReceiptNumber = c.OfficialReceiptNumber,
+                    Status = c.Status,
+                    IssuedDate = c.DateIssued ?? default,
+                    IssuedBy = c.IssuedBy,
+                    FeePaid = c.FeePaid,
+                    PaymentReceiptPath = c.PaymentReceiptPath
+                };
+            }).ToList();
         }
 
         public async Task<IEnumerable<CertificateDTO>> GetCertificatesByResidentAsync(int residentId)
@@ -64,29 +92,32 @@ namespace BarangayCMS.BLL.Services
             return certs.Select(cert => new CertificateDTO
             {
                 Id = cert.CertificateId,
-                ResidentId = cert.ResidentId,
+                ResidentId = cert.ResidentId.GetValueOrDefault(),
                 CertificateType = cert.CertificateType,
                 Purpose = cert.Purpose,
                 ControlNumber = cert.ControlNumber,
                 Status = cert.Status,
-                IssuedDate = cert.DateIssued ?? DateTime.MinValue
+                IssuedDate = cert.DateRequested,
+                FeePaid = cert.FeePaid,
+                PaymentReceiptPath = cert.PaymentReceiptPath
             });
         }
 
         public async Task<bool> RequestCertificateAsync(CertificateDTO dto)
         {
-            var cert = new Certificate
+            var entity = new Certificate
             {
-                ResidentId = dto.ResidentId,
                 CertificateType = dto.CertificateType,
                 Purpose = dto.Purpose,
-                FeePaid = dto.FeePaid,
-                OfficialReceiptNumber = dto.OfficialReceiptNumber,
                 Status = "Pending",
-                DateRequested = DateTime.Now
+                DateRequested = DateTime.Now,
+                ResidentName = dto.ResidentName,
+                ResidentId = dto.ResidentId > 0 ? dto.ResidentId : null,
+                PaymentReceiptPath = dto.PaymentReceiptPath,
+                FeePaid = dto.FeePaid
             };
 
-            await _certRepo.AddAsync(cert);
+            await _certRepo.AddAsync(entity);
             return await _certRepo.SaveChangesAsync();
         }
 

@@ -4,14 +4,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BarangayCMS.Web.Areas.Admin.Models
 {
+    // Isa lang dapat ito sa buong system at may tugmang properties sa Controller natin
     public class BarangayProfileViewModel
     {
-        [Required]
-        [Display(Name = "Pangalan ng Barangay")]
-        public string BarangayName { get; set; } = "Barangay Poblacion Uno";
+        [Required(ErrorMessage = "Ang pangalan ng Barangay ay kinakailangan.")]
+        [Display(Name = "Official Barangay Name")]
+        public string OfficialBarangayName { get; set; } = "Barangay Poblacion Uno";
 
-        [Required]
-        public string Municipality { get; set; } = "Quezon City";
+        [Required(ErrorMessage = "Ang pangalan ng Siyudad/Munisipyo ay kinakailangan.")]
+        [Display(Name = "Municipality / City")]
+        public string MunicipalityCity { get; set; } = "Quezon City";
 
         [Required]
         public string Province { get; set; } = "Metro Manila";

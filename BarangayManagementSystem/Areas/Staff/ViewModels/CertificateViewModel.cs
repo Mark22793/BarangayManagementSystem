@@ -11,6 +11,10 @@ namespace BarangayCMS.Areas.Staff.ViewModels
         [Display(Name = "Resident Name")]
         public int ResidentId { get; set; }
 
+        public decimal FeePaid { get; set; }
+        public string? PaymentReceiptPath { get; set; }
+
+
         public string ResidentName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Pumili ng uri ng sertipiko.")]

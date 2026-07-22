@@ -3,8 +3,6 @@
 @{
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Complaints & Blotter Management";
-
-   
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -36,7 +34,18 @@
                     {
                         <tr>
                             <td class="fw-bold text-dark">#@item.Subject</td>
-                            <td>@item.ResidentFullName</td>
+                            <td>
+                                @* 🛠️ HACK / DISKARTE SA UI ONLY: *@
+                                @* Kung ang Subject/Case ID ay nagsisimula sa CMP (Public Portal), itatago natin ang pangalan ng default resident (Jomarie) *@
+                                @if (item.Subject != null && item.Subject.StartsWith("CMP"))
+                                {
+                                    <span class="text-muted italic"><i class="bi bi-globe me-1"></i>Public Web Citizen</span>
+                                }
+                                else
+                                {
+                                    @item.ResidentFullName
+                                }
+                            </td>
                             <td class="text-truncate" style="max-width: 250px;">@item.Description</td>
                             <td>
                                 @if (item.Status == "Pending")
